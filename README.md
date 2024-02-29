@@ -19,3 +19,7 @@ IZOH:
 4. Productlarni category bo'yicha filterlash amalga oshirildi (qisman tayyor, ohiriga yetmadi)
 5. Productga like bosish imkoniyati amalga oshirildi (qisman tayyor, ohiriga yetmadi)
 6. Pagination qo'shilgan ✓
+
+
+username: ```ali```
+password: ```20030307mart```
