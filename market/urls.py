@@ -17,5 +17,5 @@ urlpatterns = [
     path('login/', AuthorLoginView.as_view(), name='login'),
     path('register/', AuthorRegisterView.as_view(), name='register'),
     path('logout/', AuthorLogoutView.as_view(), name='logout'),
-    path('like_author/<int:author_id>/', LikeAuthorView.as_view(), name='like_author'),
+    path('like_author/<pk>/', LikeAuthorView.as_view(), name='like_author'),
 ]

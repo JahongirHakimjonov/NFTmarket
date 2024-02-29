@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models import CASCADE
 from django.utils.translation import gettext_lazy as _
 
 
@@ -72,3 +73,12 @@ class Product(AbstractBaseModel):
     class Meta:
         verbose_name_plural = 'Products'
         db_table = 'products'
+
+
+class AuthorLike(AbstractBaseModel):
+    author = models.ForeignKey(Author, CASCADE, 'likes')
+
+    class Meta:
+        verbose_name_plural = 'Author Likes'
+        db_table = 'author_likes'
+        unique_together = ('author', 'created_at')

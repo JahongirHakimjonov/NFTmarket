@@ -1,9 +1,10 @@
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, TemplateView, View, CreateView
 from django.contrib.auth import authenticate, login
 from .forms import AuthorLoginForm, AuthorRegistrationForm, CreateProductForm
-from .models import Product, Author
+from .models import Product, Author, AuthorLike
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.views.generic.edit import FormView
@@ -17,6 +18,9 @@ from .forms import ProductDetailForm
 from django.http import JsonResponse
 from django.views import View
 from .models import Author
+from django.shortcuts import render
+from .models import Product
+
 
 
 class HomeView(ListView):
@@ -162,16 +166,15 @@ class ProductDetailView(FormMixin, DetailView):
             return self.form_invalid(form)
 
 
-class LikeAuthorView(View):
-    def post(self, request, *args, **kwargs):
-        author = get_object_or_404(Author, id=request.POST.get('id'))
-        author.like_count += 1
-        author.save()
-        return JsonResponse({'like_count': author.like_count})
+class LikeAuthorView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        product = Product.objects.get(pk=pk)
+        like, created = AuthorLike.objects.get_or_create(author_id=request.user.id, product=product)
+        if not created:
+            like.delete()
+        return redirect(reverse("market:author_detail", kwargs={"pk": product.pk}))
 
 
-from django.shortcuts import render
-from .models import Product
 
 
 def explore(request):
